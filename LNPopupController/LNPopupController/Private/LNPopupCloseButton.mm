@@ -268,18 +268,24 @@ __attribute__((objc_direct_members))
         CGPathRelease(path);
         
         _effectView.layer.mask = maskLayer;
-        
-        // Adjust the Y position here
+
+        // Adjust the whole button's Y position here
         CGRect frame = self.frame;
         
-        // Assuming navBarHeight is the height of the nav bar
-        CGFloat navBarHeight = 44; // Typically, you can reference the nav bar's height here
+        // Assuming navBarHeight is the height of the nav bar (you might need to replace it with the actual nav bar height)
+        CGFloat navBarHeight = self.superview.bounds.size.height;
         CGFloat buttonHeight = self.bounds.size.height;
-        
-        // Adjust Y position to center the button vertically
+
+        // Center the button vertically in the nav bar
         frame.origin.y = (navBarHeight - buttonHeight) / 2.0;
         
+        // Set the new frame to the whole button (circle and chevron)
         self.frame = frame;
+        
+        // Ensure the chevron remains centered inside the circle
+        CGRect imageFrame = self.imageView.frame;
+        imageFrame.origin.y = (self.bounds.size.height - imageFrame.size.height) / 2.0;
+        self.imageView.frame = imageFrame;
     }
 }
 
