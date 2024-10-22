@@ -250,32 +250,37 @@ __attribute__((objc_direct_members))
 
 - (void)layoutSubviews
 {
-	[super layoutSubviews];
-	
-	if(_style == LNPopupCloseButtonStyleRound)
-	{
-		[self sendSubviewToBack:_effectView];
-		
-		CGFloat minSideSize = MIN(self.bounds.size.width, self.bounds.size.height);
-		
-		_effectView.frame = self.bounds;
-		CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
-		maskLayer.rasterizationScale = [UIScreen mainScreen].nativeScale;
-		maskLayer.shouldRasterize = YES;
-		
-		CGPathRef path = CGPathCreateWithRoundedRect(self.bounds, minSideSize / 2, minSideSize / 2, NULL);
-		maskLayer.path = path;
-		CGPathRelease(path);
-		
-		_effectView.layer.mask = maskLayer;
-		
-		// Center the button vertically within its parent view
-		CGRect imageFrame = self.imageView.frame;
-		CGFloat parentHeight = self.superview.bounds.size.height; // Assuming the button is added to the nav bar or similar container
-		CGFloat buttonHeight = imageFrame.size.height;
-		imageFrame.origin.y = (parentHeight - buttonHeight) / 2; // Center Y position
-		self.imageView.frame = imageFrame;
-	}
+    [super layoutSubviews];
+    
+    if (_style == LNPopupCloseButtonStyleRound)
+    {
+        [self sendSubviewToBack:_effectView];
+        
+        CGFloat minSideSize = MIN(self.bounds.size.width, self.bounds.size.height);
+        
+        _effectView.frame = self.bounds;
+        CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+        maskLayer.rasterizationScale = [UIScreen mainScreen].nativeScale;
+        maskLayer.shouldRasterize = YES;
+        
+        CGPathRef path = CGPathCreateWithRoundedRect(self.bounds, minSideSize / 2, minSideSize / 2, NULL);
+        maskLayer.path = path;
+        CGPathRelease(path);
+        
+        _effectView.layer.mask = maskLayer;
+        
+        // Adjust the Y position here
+        CGRect frame = self.frame;
+        
+        // Assuming navBarHeight is the height of the nav bar
+        CGFloat navBarHeight = 44; // Typically, you can reference the nav bar's height here
+        CGFloat buttonHeight = self.bounds.size.height;
+        
+        // Adjust Y position to center the button vertically
+        frame.origin.y = (navBarHeight - buttonHeight) / 2.0;
+        
+        self.frame = frame;
+    }
 }
 
 - (CGSize)sizeThatFits:(CGSize)size
