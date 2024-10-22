@@ -269,8 +269,11 @@ __attribute__((objc_direct_members))
 		
 		_effectView.layer.mask = maskLayer;
 		
+		// Center the button vertically within its parent view
 		CGRect imageFrame = self.imageView.frame;
-		imageFrame.origin.y += 0.5;
+		CGFloat parentHeight = self.superview.bounds.size.height; // Assuming the button is added to the nav bar or similar container
+		CGFloat buttonHeight = imageFrame.size.height;
+		imageFrame.origin.y = (parentHeight - buttonHeight) / 2; // Center Y position
 		self.imageView.frame = imageFrame;
 	}
 }
